@@ -304,6 +304,15 @@ class ActionsEasycrm
             }
         }
 
+        $buttonLabel = $langs->trans('Sign');
+        $buttonUrl   = DOL_URL_ROOT . '/custom/saturne/public/signature/add_signature.php';
+        ?>
+        <script>
+            console.log($('.commande_extras_order_easycrm_signature'))
+            $("[class*=easycrm_signature]").html('<a target="_blank" href="'+ <?php echo json_encode($buttonUrl) ?> +'"><button class="butAction">'+ <?php echo json_encode($buttonLabel) ?> +'</button></a>')
+        </script>
+        <?php
+
         return 0; // or return 1 to replace standard code
     }
 
@@ -382,6 +391,22 @@ class ActionsEasycrm
         }
 
         return 0; // or return 1 to replace standard code
+    }
+
+    /**
+     * Execute action formObjectOptions
+     *
+     * @return int 1
+     */
+    public function formObjectOptions(): int {
+
+        ?>
+        <script>
+            console.log($('.commande_extras_order_easycrm_signature'))
+            $("[class*=easycrm_signature]").html('<button class="wpeo-button">aa</button>')
+        </script>
+        <?php
+        return 0;
     }
 
 }

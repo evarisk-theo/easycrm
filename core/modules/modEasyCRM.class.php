@@ -122,6 +122,7 @@ class modEasyCRM extends DolibarrModules
                 'projectcard',
                 'projectlist',
                 'propalcard',
+                'globalcard'
             ],
 			// Set this to 1 if features of module are opened to external users
 			'moduleforexternal' => 0,
@@ -250,7 +251,7 @@ class modEasyCRM extends DolibarrModules
 					$objectType = $objectType;
 				}
 				$this->tabs[] = ['data' => $objectType . ':+address:' . $pictoEasycrm . $langs->trans('Addresses') . ':easycrm@easycrm:$user->rights->easycrm->read:/custom/easycrm/view/address_card.php?from_id=__ID__&from_type=' . $objectType];
-				$this->tabs[] = ['data' => $objectType . ':+map:' . $pictoEasycrm . $langs->trans('Map') . ':easycrm@easycrm:$user->rights->easycrm->read:/custom/easycrm/view/map.php?from_type=' . $objectType . '&from_id=__ID__'];
+                $this->tabs[] = ['data' => $objectType . ':+map:' . $pictoEasycrm . $langs->trans('Map') . ':easycrm@easycrm:$user->rights->easycrm->read:/custom/easycrm/view/map.php?from_type=' . $objectType . '&from_id=__ID__'];
 			}
 		}
 
@@ -474,6 +475,17 @@ class modEasyCRM extends DolibarrModules
                 $extrafields->addExtraField($objectType . 'address', 'FavoriteAddress', 'sellist', 101, 255, $objectMetadata['table_element'], 0, 0, '', 'a:1:{s:7:"options";a:1:{s:' . $extrafieldParamSize . ':"' . $extrafieldParam .'";N;}}', 1, '$user->rights->easycrm->address->write', 1, '', '', '', 'easycrm@easycrm', '1', 0, 0, ['css => minwidth100 maxwidth300 widthcentpercentminusx']);
             }
         }
+
+        require_once __DIR__ . '/../../lib/easycrm.lib.php';
+        $signableObjects = easycrm_get_signable_objects();
+
+        if (is_array($signableObjects) && !empty($signableObjects)) {
+            foreach ($signableObjects as $objectType => $objectMetadata) {
+                $extrafields->update($objectType . '_easycrm_signature', 'EasyCRMSignature', 'varchar', 255, $objectMetadata['table_element'], 0, 0, 101, '', 0, '$user->rights->easycrm->address->write', 1, '', '', '', '', 'easycrm@easycrm', '1', 0, 0, ['css => minwidth100 maxwidth300 widthcentpercentminusx']);
+                $extrafields->addExtraField($objectType . '_easycrm_signature', 'EasyCRMSignature', 'varchar', 101, 255, $objectMetadata['table_element'], 0, 0, '', '', 0, '$user->rights->easycrm->address->write', 1, '', '', '', 'easycrm@easycrm', '1', 0, 0, ['css => minwidth100 maxwidth300 widthcentpercentminusx']);
+            }
+        }
+
         if (empty($conf->global->EASYCRM_ACTIONCOMM_COMMERCIAL_RELAUNCH_TAG)) {
             require_once DOL_DOCUMENT_ROOT . '/categories/class/categorie.class.php';
 

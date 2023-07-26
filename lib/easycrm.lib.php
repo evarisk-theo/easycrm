@@ -60,3 +60,71 @@ function easycrm_admin_prepare_head(): array
 
     return $head;
 }
+
+/**
+ * Get signable dolibarr objects
+ *
+ * @return array
+ */
+function easycrm_get_signable_objects(): array
+{
+    $objectsMetadata = [];
+
+    if (isModEnabled('propal')) {
+        $objectsMetadata['propal'] = [
+            'mainmenu'      => 'commercial',
+            'leftmenu'      => 'propals',
+            'langs'         => 'Proposal',
+            'langfile'      => 'propal',
+            'picto'         => 'propal',
+            'class_name'    => 'Propal',
+            'post_name'     => 'fk_propal',
+            'link_name'     => 'propal',
+            'tab_type'      => 'propal',
+            'table_element' => 'propal',
+            'name_field'    => 'ref',
+            'create_url'    => 'comm/propal/card.php',
+            'class_path'    => 'comm/propal/class/propal.class.php',
+            'lib_path'      => 'core/lib/propal.lib.php',
+        ];
+    }
+
+    if (isModEnabled('facture')) {
+        $objectsMetadata['invoice'] = [
+            'mainmenu'      => 'billing',
+            'leftmenu'      => 'customers_bills',
+            'langs'         => 'Invoice',
+            'langfile'      => 'bills',
+            'picto'         => 'bill',
+            'class_name'    => 'Facture',
+            'post_name'     => 'fk_invoice',
+            'link_name'     => 'facture',
+            'tab_type'      => 'invoice',
+            'table_element' => 'facture',
+            'name_field'    => 'ref',
+            'create_url'    => 'compta/facture/card.php',
+            'class_path'    => 'compta/facture/class/facture.class.php',
+            'lib_path'      => 'core/lib/invoice.lib.php',
+        ];
+    }
+
+    if (isModEnabled('order')) {
+        $objectsMetadata['order'] = [
+            'mainmenu'      => 'billing',
+            'leftmenu'      => 'orders',
+            'langs'         => 'Order',
+            'langfile'      => 'orders',
+            'picto'         => 'order',
+            'class_name'    => 'Commande',
+            'post_name'     => 'fk_order',
+            'link_name'     => 'commande',
+            'tab_type'      => 'order',
+            'table_element' => 'commande',
+            'name_field'    => 'ref',
+            'create_url'    => 'commande/card.php',
+            'class_path'    => 'commande/class/commande.class.php',
+            'lib_path'      => 'core/lib/order.lib.php',
+        ];
+    }
+    return $objectsMetadata;
+}
